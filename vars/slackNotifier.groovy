@@ -13,7 +13,7 @@ def failed() {
       attachment.put('title','Jenkins has failed you');
       attachment.put('text','Something went wrong!');
       attachment.put('fallback','Ruh Roh!');
-      attachment.put('image_url','http://gph.is/28O6Hhq');
+      attachment.put('image_url','https://bit.ly/2OG9P3G');
       attachment.put('color','danger');
 
       attachments.add(attachment);
@@ -30,7 +30,7 @@ def successful() {
       attachment.put('title','Jenkins Build was successful');
       attachment.put('text','YAAAAS!');
       attachment.put('fallback','high five!');
-      attachment.put('image_url','https://gph.is/15y5lT4');
+      attachment.put('image_url','https://bit.ly/2RKD1bt');
       attachment.put('color','success');
 
       attachments.add(attachment);
@@ -46,7 +46,7 @@ def call(String buildResult) {
   else if( buildResult == "FAILURE" ) { 
     failed()
   }
-  else {
+    else {
     slackSend color: "danger", message: "Job: ${env.JOB_NAME} with buildnumber ${env.BUILD_NUMBER} its results were unclear"
   }
 }
