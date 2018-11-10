@@ -15,7 +15,7 @@ def call(String channel) {
 	    attachments.add(attachment);
 	    slackSend(message: "Started <${env.JOB_URL}${env.JOB_NAME}> (<${env.BUILD_URL}|#${env.BUILD_NUMBER}>)",
 	    	channel: "${channel}",
-			color: "#764FA5"),
+			color: "#764FA5",
 	    	attachments: attachments.toString())
 	}
 }
