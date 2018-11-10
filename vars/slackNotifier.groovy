@@ -5,7 +5,7 @@
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-def failed() {
+def failed(String channel) {
   node {
       JSONArray attachments = new JSONArray();
       JSONObject attachment = new JSONObject();
@@ -23,7 +23,8 @@ def failed() {
   }
 }
 
-def successful() {
+def successful(String channel) {
+  node {
       JSONArray attachments = new JSONArray();
       JSONObject attachment = new JSONObject();
 
@@ -37,17 +38,19 @@ def successful() {
       slackSend(message: "This job <${env.JOB_URL}${env.JOB_NAME}> (<${env.BUILD_URL}|#${env.BUILD_NUMBER}>)\nCompleted.",
         channel: "${channel}",
         attachments: attachments.toString())
-
+  }
 }
 
-def call(String buildResult) {
+def call(String buildResult, String channel) {
   if ( buildResult == "SUCCESS" ) {
-    successful()
+    successful(channel)
   }
   else if( buildResult == "FAILURE" ) { 
-    failed()
+    failed(channel)
   }
   else {
-    slackSend color: "danger", message: "Job: ${env.JOB_NAME} with buildnumber ${env.BUILD_NUMBER} its results were unclear"
+    slackSend color: "danger", 
+    message: "Job: ${env.JOB_NAME} with buildnumber ${env.BUILD_NUMBER} its results were unclear",
+    channel: "${channel}"
   }
 }
