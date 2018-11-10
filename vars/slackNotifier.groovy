@@ -5,7 +5,7 @@
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-def failed(String channel) {
+def failed() {
   node {
       JSONArray attachments = new JSONArray();
       JSONObject attachment = new JSONObject();
@@ -18,12 +18,11 @@ def failed(String channel) {
 
       attachments.add(attachment);
       slackSend(message: "This job <${env.JOB_URL}${env.JOB_NAME}> (<${env.BUILD_URL}|#${env.BUILD_NUMBER}>)\nHas failed.",
-        channel: "${channel}",
         attachments: attachments.toString())
   }
 }
 
-def successful(String channel) {
+def successful() {
   node {
       JSONArray attachments = new JSONArray();
       JSONObject attachment = new JSONObject();
@@ -36,21 +35,18 @@ def successful(String channel) {
 
       attachments.add(attachment);
       slackSend(message: "This job <${env.JOB_URL}${env.JOB_NAME}> (<${env.BUILD_URL}|#${env.BUILD_NUMBER}>)\nCompleted.",
-        channel: "${channel}",
         attachments: attachments.toString())
   }
 }
 
-def call(String buildResult, String channel) {
+def call(String buildResult) {
   if ( buildResult == "SUCCESS" ) {
-    successful(channel)
+    successful()
   }
   else if( buildResult == "FAILURE" ) { 
-    failed(channel)
+    failed()
   }
   else {
-    slackSend color: "danger", 
-    message: "Job: ${env.JOB_NAME} with buildnumber ${env.BUILD_NUMBER} its results were unclear",
-    channel: "${channel}"
+    slackSend color: "danger", message: "Job: ${env.JOB_NAME} with buildnumber ${env.BUILD_NUMBER} its results were unclear"
   }
 }
